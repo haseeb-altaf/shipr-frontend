@@ -21,14 +21,18 @@ The frontend repository for the Shipr project.
 - Node.js
 - npm
 
-### Installation
+### Running project
 
 1. Install packages 
     ```bash
     npm install
     ```
-
-2. Run frontend
+2. Make sure you have a .env file with following variables.
+    ```
+    REACT_APP_INVENTORY_SERVICE_URL=xxx
+    REACT_APP_PAYMENTS_SERVICE_URL=xxx
+    ```
+3. Run frontend locally
    ```bash
    npm start
    ```

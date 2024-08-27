@@ -7,7 +7,7 @@ export const Products = () => {
 
     useEffect(() => {
         (async () => {
-            const response = await fetch(`${process.env.REACT_APP_INVENTRY_SERVICE_URL}/products`);
+            const response = await fetch(`${process.env.REACT_APP_INVENTORY_SERVICE_URL}/products`);
             const content = await response.json();
             setProducts(content);
         })();
@@ -15,7 +15,7 @@ export const Products = () => {
 
     const del = async id => {
         if (window.confirm('Are you sure to delete this record?')) {
-            await fetch(`${process.env.REACT_APP_INVENTRY_SERVICE_URL}/products/${id}`, {
+            await fetch(`${process.env.REACT_APP_INVENTORY_SERVICE_URL}/products/${id}`, {
                 method: 'DELETE'
             });
 

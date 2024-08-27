@@ -9,7 +9,7 @@ export const Orders = () => {
         (async () => {
             try {
                 if (id) {
-                    const response = await fetch(`${process.env.REACT_APP_INVENTRY_SERVICE_URL}/products/${id}`);
+                    const response = await fetch(`${process.env.REACT_APP_INVENTORY_SERVICE_URL}/products/${id}`);
                     const content = await response.json();
                     const price = parseFloat(content.price) * 1.2;
                     setMessage(`Your product price is $${price}`);
