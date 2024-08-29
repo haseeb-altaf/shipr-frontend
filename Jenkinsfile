@@ -8,6 +8,7 @@ pipeline {
         DOCKER_CREDENTIALS_ID = 'docker-hub-credentials' // Jenkins credentials ID for Docker Hub
         DOCKER_HUB_REPO = 'haseeb497/project' // Your Docker Hub repository
         IMAGE_NAME = "${DOCKER_HUB_REPO}:${env.BRANCH_NAME}" // Image name with branch tag
+        DOCKERFILE_PATH = "${env.BRANCH_NAME}/Dockerfile" // Path to Dockerfile based on branch
     }
 
     stages {
@@ -24,11 +25,11 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    echo "Building Docker image: ${IMAGE_NAME}"
-                    // Check if Dockerfile exists in the root
-                    sh "ls -la"
+                    echo "Building Docker image: ${IMAGE_NAME} using Dockerfile from ${DOCKERFILE_PATH}"
+                    // Check if Dockerfile exists in the path
+                    sh "ls -la ${DOCKERFILE_PATH}"
                     // Build the Docker image
-                    sh "docker build -t ${IMAGE_NAME} ."
+                    sh "docker build -t ${IMAGE_NAME} -f ${DOCKERFILE_PATH} ."
                 }
             }
         }
