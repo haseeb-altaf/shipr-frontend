@@ -8,7 +8,7 @@ pipeline {
         DOCKER_CREDENTIALS_ID = 'docker-hub-credentials' // Jenkins credentials ID for Docker Hub
         DOCKER_HUB_REPO = 'haseeb497/project' // Your Docker Hub repository
         IMAGE_NAME = "${DOCKER_HUB_REPO}:${env.BRANCH_NAME}" // Image name with branch tag
-        DOCKERFILE_PATH = "${env.BRANCH_NAME}/Dockerfile" // Path to Dockerfile based on branch
+        DOCKERFILE_PATH = "Dockerfile" // Path to Dockerfile in the root directory
     }
 
     stages {
