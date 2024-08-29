@@ -25,6 +25,8 @@ pipeline {
             steps {
                 script {
                     echo "Building Docker image: ${IMAGE_NAME}"
+                    // Check if Dockerfile exists in the root
+                    sh "ls -la"
                     // Build the Docker image
                     sh "docker build -t ${IMAGE_NAME} ."
                 }
