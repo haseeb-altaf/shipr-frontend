@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_CREDENTIALS_ID = 'docker-hub-credentials' 
         DOCKER_HUB_REPO = 'haseeb497/project' 
-        IMAGE_NAME = "${DOCKER_HUB_REPO}:frontend-develop" 
+        IMAGE_NAME = "${DOCKER_HUB_REPO}:frontend-develop-${env.BUILD_NUMBER}"
     }
 
     stages {
