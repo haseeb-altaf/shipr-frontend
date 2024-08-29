@@ -7,7 +7,7 @@ pipeline {
     environment {
         DOCKER_CREDENTIALS_ID = 'docker-hub-credentials'
         DOCKER_HUB_REPO = 'haseeb497/project'
-        IMAGE_NAME = "${DOCKER_HUB_REPO}:${env.BRANCH_NAME}"
+        IMAGE_NAME = "${DOCKER_HUB_REPO}:frontend-${env.BRANCH_NAME}"
         DOCKERFILE_PATH = "Dockerfile"
     }
 
