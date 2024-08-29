@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_CREDENTIALS_ID = 'docker-hub-credentials' // Jenkins credentials ID for Docker Hub
-        DOCKER_HUB_REPO = 'haseeb497/project' // Your Docker Hub repository
-        IMAGE_NAME = "${DOCKER_HUB_REPO}:${env.BRANCH_NAME}" // Image name with branch tag
+        DOCKER_CREDENTIALS_ID = 'docker-hub-credentials' 
+        DOCKER_HUB_REPO = 'haseeb497/project' 
+        IMAGE_NAME = "${DOCKER_HUB_REPO}:frontend-develop" 
     }
 
     stages {
