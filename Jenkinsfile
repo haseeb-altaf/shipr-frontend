@@ -1,9 +1,7 @@
 pipeline {
     agent any
-    parameters {
-        choice(name: 'BRANCH_NAME', choices: ['main', 'develop'], description: 'Select branch to build')
-    }
 
+    // No need for manual branch selection since it's a multibranch pipeline
     environment {
         DOCKER_CREDENTIALS_ID = 'docker-hub-credentials'
         DOCKER_HUB_REPO = 'haseeb497/project'
@@ -15,7 +13,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 checkout([$class: 'GitSCM', 
-                          branches: [[name: "${params.BRANCH_NAME}"]], 
+                          branches: [[name: "${env.BRANCH_NAME}"]], 
                           userRemoteConfigs: [[url: 'https://github.com/haseeb-altaf/shipr-frontend']]
                 ])
             }
@@ -25,7 +23,6 @@ pipeline {
             steps {
                 script {
                     echo "Building Docker image: ${IMAGE_NAME} using Dockerfile from ${DOCKERFILE_PATH}"
-                    sh "ls -la ${DOCKERFILE_PATH}"
                     sh "docker build -t ${IMAGE_NAME} -f ${DOCKERFILE_PATH} ."
                 }
             }
