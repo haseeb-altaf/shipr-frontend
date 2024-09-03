@@ -1,7 +1,6 @@
 pipeline {
     agent any
     
-    // Parameters to allow developer to select branch
     parameters {
         gitParameter(
             name: 'BRANCH_NAME',
@@ -16,7 +15,7 @@ pipeline {
     
     environment {
         DOCKER_IMAGE = "haseeb497/newimage:${BRANCH_NAME}"  // Tag image with branch name
-        DOCKER_CREDENTIALS_ID = 'your-docker-hub-credentials-id'
+        DOCKER_CREDENTIALS_ID = 'docker-hub-credentials' // Replaced with your Docker Hub credentials ID
     }
     
     stages {
