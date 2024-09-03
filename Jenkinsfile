@@ -20,14 +20,6 @@ pipeline {
             }
         }
 
-        stage('Build') {
-            steps {
-                // Build the project (example: for Node.js)
-                sh 'npm install'
-                sh 'npm run build'
-            }
-        }
-
         stage('Docker Build') {
             steps {
                 // Build Docker image
