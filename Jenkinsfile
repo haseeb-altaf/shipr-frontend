@@ -1,35 +1,37 @@
 pipeline {
     agent any
-    
-    parameters {
-        gitParameter(
-            name: 'BRANCH_NAME',
-            type: 'PT_BRANCH',
-            defaultValue: 'develop',
-            description: 'Select the branch you want to deploy',
-            branchFilter: 'origin/(.*)',
-            selectedValue: 'DEFAULT',
-            sortMode: 'ASCENDING'
-        )
-    }
-    
+
     environment {
-        DOCKER_IMAGE = "haseeb497/newimage:${BRANCH_NAME}"  // Tag image with branch name
-        DOCKER_CREDENTIALS_ID = 'docker-hub-credentials' // Replaced with your Docker Hub credentials ID
+        DOCKER_IMAGE = "haseeb497/project:${BRANCH_NAME}-${BUILD_NUMBER}"
+        DOCKER_CREDENTIALS_ID = 'docker-hub-credentials'
     }
-    
+
     stages {
         stage('Checkout Code') {
             steps {
+                // Let the developer select the branch to build
+                script {
+                    def userBranch = input message: 'Select the branch to build', ok: 'Build', parameters: [string(name: 'BRANCH_NAME', defaultValue: 'develop', description: 'Branch to build')]
+                    env.BRANCH_NAME = userBranch
+                }
                 // Checkout the selected branch
-                git branch: "${params.BRANCH_NAME}", url: 'https://github.com/haseeb-altaf/shipr-frontend.git'
+                checkout([$class: 'GitSCM', branches: [[name: "${BRANCH_NAME}"]], 
+                userRemoteConfigs: [[url: 'https://github.com/haseeb-altaf/shipr-frontend.git']]])
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Build the project (example: for Node.js)
+                sh 'npm install'
+                sh 'npm run build'
             }
         }
 
         stage('Docker Build') {
             steps {
                 // Build Docker image
-                sh "docker build -t ${env.DOCKER_IMAGE} ."
+                sh "docker build -t ${DOCKER_IMAGE} ."
             }
         }
 
@@ -38,25 +40,9 @@ pipeline {
                 // Push Docker image to Docker Hub
                 withCredentials([string(credentialsId: env.DOCKER_CREDENTIALS_ID, variable: 'DOCKERHUB_TOKEN')]) {
                     sh "echo $DOCKERHUB_TOKEN | docker login -u haseeb497 --password-stdin"
-                    sh "docker push ${env.DOCKER_IMAGE}"
+                    sh "docker push ${DOCKER_IMAGE}"
                 }
             }
-        }
-
-        stage('Cleanup') {
-            steps {
-                // Clean up Docker images from the Jenkins agent
-                sh "docker rmi ${env.DOCKER_IMAGE}"
-            }
-        }
-    }
-    
-    post {
-        success {
-            echo "The branch ${params.BRANCH_NAME} has been successfully deployed!"
-        }
-        failure {
-            echo "Deployment failed for branch ${params.BRANCH_NAME}."
         }
     }
 }
